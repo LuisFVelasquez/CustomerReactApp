@@ -62,8 +62,8 @@ const Login = () => {
         const user = userCredential.user;
         //const token = userCredential.accessToken;
         // The signed-in user info.
-        localStorage.setItem('user', JSON.stringify(user));
-        user.getIdToken(true).then(token => localStorage.setItem('token', token));
+        //localStorage.setItem('user', JSON.stringify(user));
+        
         
         // ...
       })
