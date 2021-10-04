@@ -9,11 +9,12 @@ import {
   ModalBody,
   FormGroup,
   ModalFooter,
-  Spinner
+  Spinner,
+  InputGroup
 } from "reactstrap";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useHistory } from "react-router";
-import { getAuth  } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import "./User.css";
 
 const data = [
@@ -33,16 +34,14 @@ const User = () => {
   const [user, loading, error] = useAuthState(auth);
   const [name, setName] = React.useState("");
   const history = useHistory();
-
-
   const logout = () => {
-    auth.signOut().then(function() {
+    auth.signOut().then(function () {
       // Sign-out successful.
       console.log("loggedout");
-    }).catch((error) =>  {
+    }).catch((error) => {
       // An error happened.
       const errorCode = error.code;
-        const errorMessage = error.message;
+      const errorMessage = error.message;
     });
   };
 
@@ -58,27 +57,37 @@ const User = () => {
   });
 
   React.useEffect(() => {
-    fetch(`${BASE_URL}${PATH_CUSTOMERS}`)
-      .then(res => res.json())
-      .then(
-        (result) => {
-          setIsLoaded(true);
-          setUsuario({
-            ...usuario,
-            data: result
-          });
-        },
-        (error) => {
-          setIsLoaded(true);
-          setErrors(error);
-        }
-      )
-  }, [newVal]);
-
-  React.useEffect(() => {
     if (loading) return;
     if (!user) return history.replace("/");
   }, [user, loading]);
+
+  React.useEffect(() => {
+    if (!user) return history.replace("/");
+    user.getIdToken(true).then(token => {
+      const requestOptions = {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'AuthToken': `${token}`
+        },
+      };
+      fetch(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions)
+        .then(res => res.json())
+        .then(
+          (result) => {
+            setIsLoaded(true);
+            setUsuario({
+              ...usuario,
+              data: result
+            });
+          },
+          (error) => {
+            setIsLoaded(true);
+            setErrors(error);
+          }
+        )
+    });
+  }, [newVal]);
 
   const handleChange = (e) => {
     setUsuario((prevState) => ({
@@ -139,9 +148,12 @@ const User = () => {
 
   const insertar = () => {
     let usuarioACrear = { ...usuario.form };
+    user.getIdToken(true).then(token => {
     const requestOptions = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json',
+        'AuthToken': `${token}`  
+      },
       body: JSON.stringify(usuarioACrear)
     };
     fetch(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions)
@@ -154,42 +166,51 @@ const User = () => {
           setIsLoaded(true);
           setErrors(error);
         })
+      });
     setModalInsertar(false);
   }
 
   const borrarCustomer = (id) => {
-    const requestOptions = {
-      method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' }
-    };
-    fetch(`${BASE_URL}${PATH_CUSTOMERS}/${id}`, requestOptions)
-      .then(result => result.json())
-      .then(
-        (result) => {
-          setNewVal(newVal + 1);
-        },
-        (error) => {
-          console.log(error);
+    user.getIdToken(true).then(token => {
+      const requestOptions = {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json',
+          'AuthToken': `${token}` 
         }
-      );
+      };
+      fetch(`${BASE_URL}${PATH_CUSTOMERS}/${id}`, requestOptions)
+        .then(result => result.json())
+        .then(
+          (result) => {
+            setNewVal(newVal + 1);
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+    });
   }
 
   const actualizarCustomer = (customer) => {
-    const requestOptions = {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(customer)
-    };
-    fetch(`${BASE_URL}${PATH_CUSTOMERS}/${customer._id}`, requestOptions)
-      .then(result => result.json())
-      .then(
-        (result) => {
-          setNewVal(newVal + 1);
+    user.getIdToken(true).then(token => {
+      const requestOptions = {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json',
+          'AuthToken': `${token}` 
         },
-        (error) => {
-          console.log(error);
-        }
-      );
+        body: JSON.stringify(customer)
+      };
+      fetch(`${BASE_URL}${PATH_CUSTOMERS}/${customer._id}`, requestOptions)
+        .then(result => result.json())
+        .then(
+          (result) => {
+            setNewVal(newVal + 1);
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+    });
   }
 
   if (error) {
