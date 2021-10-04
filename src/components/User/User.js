@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Alert,
   Table,
   Button,
   Container,
@@ -8,6 +9,7 @@ import {
   ModalBody,
   FormGroup,
   ModalFooter,
+  Spinner
 } from "reactstrap";
 
 const data = [
@@ -15,8 +17,6 @@ const data = [
 
 const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 const PATH_CUSTOMERS = process.env.REACT_APP_API_CUSTOMERS_PATH;
-console.log(BASE_URL);
-console.log(PATH_CUSTOMERS);
 
 const User = () => {
 
@@ -97,7 +97,7 @@ const User = () => {
     let usuarioAModificar = { ...usuario.form };
     actualizarCustomer(usuarioAModificar);
     setModalActualizar(false);
-    setNewVal(newVal+1);
+    setNewVal(newVal + 1);
   };
 
   const eliminar = (e) => {
@@ -110,7 +110,7 @@ const User = () => {
         }
       }
     });
-    setNewVal(newVal+1);
+    setNewVal(newVal + 1);
   };
 
   const insertar = () => {
@@ -124,7 +124,7 @@ const User = () => {
       .then(
         (response) => {
           response.json();
-          setNewVal(newVal+1);
+          setNewVal(newVal + 1);
         },
         (error) => {
           setIsLoaded(true);
@@ -142,7 +142,7 @@ const User = () => {
       .then(result => result.json())
       .then(
         (result) => {
-          setNewVal(newVal+1);
+          setNewVal(newVal + 1);
         },
         (error) => {
           console.log(error);
@@ -160,7 +160,7 @@ const User = () => {
       .then(result => result.json())
       .then(
         (result) => {
-          
+          setNewVal(newVal + 1);
         },
         (error) => {
           console.log(error);
@@ -168,233 +168,246 @@ const User = () => {
       );
   }
 
-  return (
-    <>
-      <Container>
-        <br />
-        <Button color="success" onClick={mostrarModalInsertar}>Crear</Button>
-        <br />
-        <br />
-        <Table>
-          <thead>
-            <tr>
-              <th>Email</th>
-              <th>Nombre</th>
-              <th>Apellido</th>
-              <th>Dirección</th>
-              <th>Telefóno</th>
-              <th>Acción</th>
-            </tr>
-          </thead>
+  if (error) {
+    return <Alert color="danger">
+      Error: {error.message}
+    </Alert>;
+  } else {
+    return (
 
-          <tbody>
-            {usuario.data.map((dato) => (
-              <tr key={dato._id}>
-                <td>{dato.email}</td>
-                <td>{dato.firstName}</td>
-                <td>{dato.lastName}</td>
-                <td>{dato.address}</td>
-                <td>{dato.phoneNumber}</td>
-                <td>
-                  <Button
-                    color="primary" id={dato._id}
-                    onClick={mostrarModalActualizar}
-                  >
-                    Editar
-                  </Button>{" "}
-                  <Button id={dato._id} color="danger" onClick={eliminar}>Eliminar</Button>
-                </td>
+      <>
+        <Container>
+          <div>
+
+          </div>
+          <div>
+            <b>{isLoaded ? '' : <Spinner animation="border" role="status"><span className="visually-hidden">Loading...</span></Spinner>}</b>
+          </div>
+          <br />
+          <Button color="success" onClick={mostrarModalInsertar}>Crear</Button>
+          <br />
+          <br />
+          <Table>
+            <thead>
+              <tr>
+                <th>Email</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Dirección</th>
+                <th>Telefóno</th>
+                <th>Acción</th>
               </tr>
-            ))}
-          </tbody>
-        </Table>
-      </Container>
+            </thead>
 
-      <Modal isOpen={modalActualizar}>
-        <ModalHeader>
-          <div><h3>Actualizar Usuario {usuario.form._id}</h3></div>
-        </ModalHeader>
+            <tbody>
+              {usuario.data.map((dato) => (
+                <tr key={dato._id}>
+                  <td>{dato.email}</td>
+                  <td>{dato.firstName}</td>
+                  <td>{dato.lastName}</td>
+                  <td>{dato.address}</td>
+                  <td>{dato.phoneNumber}</td>
+                  <td>
+                    <Button
+                      color="primary" id={dato._id}
+                      onClick={mostrarModalActualizar}
+                    >
+                      Editar
+                    </Button>{" "}
+                    <Button id={dato._id} color="danger" onClick={eliminar}>Eliminar</Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </Container>
 
-        <ModalBody>
-          <FormGroup>
-            <label>
-              Id:
-            </label>
+        <Modal isOpen={modalActualizar}>
+          <ModalHeader>
+            <div><h3>Actualizar Usuario {usuario.form._id}</h3></div>
+          </ModalHeader>
 
-            <input
-              className="form-control"
-              readOnly
-              type="text"
-              value={usuario.form._id}
-            />
-          </FormGroup>
+          <ModalBody>
+            <FormGroup>
+              <label>
+                Id:
+              </label>
 
-          <FormGroup>
-            <label>
-              Email:
-            </label>
-            <input
-              className="form-control"
-              name="email"
-              type="text"
-              onChange={handleChange}
-              value={usuario.form.email}
-              required
-            />
-          </FormGroup>
+              <input
+                className="form-control"
+                readOnly
+                type="text"
+                value={usuario.form._id}
+              />
+            </FormGroup>
 
-          <FormGroup>
-            <label>
-              Nombre:
-            </label>
-            <input
-              className="form-control"
-              name="firstName"
-              type="text"
-              onChange={handleChange}
-              value={usuario.form.firstName}
-            />
-          </FormGroup>
+            <FormGroup>
+              <label>
+                Email:
+              </label>
+              <input
+                className="form-control"
+                name="email"
+                type="text"
+                onChange={handleChange}
+                value={usuario.form.email}
+                required
+              />
+            </FormGroup>
 
-          <FormGroup>
-            <label>
-              Apellido:
-            </label>
-            <input
-              className="form-control"
-              name="lastName"
-              type="text"
-              onChange={handleChange}
-              value={usuario.form.lastName}
-            />
-          </FormGroup>
+            <FormGroup>
+              <label>
+                Nombre:
+              </label>
+              <input
+                className="form-control"
+                name="firstName"
+                type="text"
+                onChange={handleChange}
+                value={usuario.form.firstName}
+              />
+            </FormGroup>
 
-          <FormGroup>
-            <label>
-              Dirección:
-            </label>
-            <input
-              className="form-control"
-              name="address"
-              type="text"
-              onChange={handleChange}
-              value={usuario.form.address}
-            />
-          </FormGroup>
-          <FormGroup>
-            <label>
-              Telefóno:
-            </label>
-            <input
-              className="form-control"
-              name="phoneNumber"
-              type="text"
-              onChange={handleChange}
-              value={usuario.form.phoneNumber}
-            />
-          </FormGroup>
-        </ModalBody>
+            <FormGroup>
+              <label>
+                Apellido:
+              </label>
+              <input
+                className="form-control"
+                name="lastName"
+                type="text"
+                onChange={handleChange}
+                value={usuario.form.lastName}
+              />
+            </FormGroup>
 
-        <ModalFooter>
-          <Button
-            color="primary"
-            onClick={editar}
-          >
-            Actualizar
-          </Button>
-          <Button
-            className="btn btn-danger"
-            onClick={cerrarModalActualizar}
-          >
-            Cancelar
-          </Button>
-        </ModalFooter>
-      </Modal>
+            <FormGroup>
+              <label>
+                Dirección:
+              </label>
+              <input
+                className="form-control"
+                name="address"
+                type="text"
+                onChange={handleChange}
+                value={usuario.form.address}
+              />
+            </FormGroup>
+            <FormGroup>
+              <label>
+                Telefóno:
+              </label>
+              <input
+                className="form-control"
+                name="phoneNumber"
+                type="text"
+                onChange={handleChange}
+                value={usuario.form.phoneNumber}
+              />
+            </FormGroup>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button
+              color="primary"
+              onClick={editar}
+            >
+              Actualizar
+            </Button>
+            <Button
+              className="btn btn-danger"
+              onClick={cerrarModalActualizar}
+            >
+              Cancelar
+            </Button>
+          </ModalFooter>
+        </Modal>
 
 
 
-      <Modal isOpen={modalInsertar}>
-        <ModalHeader>
-          <div><h3>Insertar Usuario</h3></div>
-        </ModalHeader>
+        <Modal isOpen={modalInsertar}>
+          <ModalHeader>
+            <div><h3>Insertar Usuario</h3></div>
+          </ModalHeader>
 
-        <ModalBody>
-          <FormGroup>
-            <label>
-              Email:
-            </label>
-            <input
-              className="form-control"
-              name="email"
-              type="text"
-              onChange={handleChange}
-              required
-            />
-          </FormGroup>
+          <ModalBody>
+            <FormGroup>
+              <label>
+                Email:
+              </label>
+              <input
+                className="form-control"
+                name="email"
+                type="text"
+                onChange={handleChange}
+                required
+              />
+            </FormGroup>
 
-          <FormGroup>
-            <label>
-              Nombre:
-            </label>
-            <input
-              className="form-control"
-              name="firstName"
-              type="text"
-              onChange={handleChange}
-            />
-          </FormGroup>
+            <FormGroup>
+              <label>
+                Nombre:
+              </label>
+              <input
+                className="form-control"
+                name="firstName"
+                type="text"
+                onChange={handleChange}
+              />
+            </FormGroup>
 
-          <FormGroup>
-            <label>
-              Apellido:
-            </label>
-            <input
-              className="form-control"
-              name="lastName"
-              type="text"
-              onChange={handleChange}
-            />
-          </FormGroup>
+            <FormGroup>
+              <label>
+                Apellido:
+              </label>
+              <input
+                className="form-control"
+                name="lastName"
+                type="text"
+                onChange={handleChange}
+              />
+            </FormGroup>
 
-          <FormGroup>
-            <label>
-              Dirección:
-            </label>
-            <input
-              className="form-control"
-              name="address"
-              type="text"
-              onChange={handleChange}
-            />
-          </FormGroup>
-          <FormGroup>
-            <label>
-              Telefóno:
-            </label>
-            <input
-              className="form-control"
-              name="phoneNumber"
-              type="text"
-              onChange={handleChange}
-            />
-          </FormGroup>
-        </ModalBody>
-        <ModalFooter>
-          <Button
-            color="primary"
-            onClick={insertar}
-          >
-            Insertar
-          </Button>
-          <Button
-            className="btn btn-danger"
-            onClick={cerrarModalInsertar}
-          >
-            Cancelar
-          </Button>
-        </ModalFooter>
-      </Modal>
-    </>
-  );
+            <FormGroup>
+              <label>
+                Dirección:
+              </label>
+              <input
+                className="form-control"
+                name="address"
+                type="text"
+                onChange={handleChange}
+              />
+            </FormGroup>
+            <FormGroup>
+              <label>
+                Telefóno:
+              </label>
+              <input
+                className="form-control"
+                name="phoneNumber"
+                type="text"
+                onChange={handleChange}
+              />
+            </FormGroup>
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              color="primary"
+              onClick={insertar}
+            >
+              Insertar
+            </Button>
+            <Button
+              className="btn btn-danger"
+              onClick={cerrarModalInsertar}
+            >
+              Cancelar
+            </Button>
+          </ModalFooter>
+        </Modal>
+      </>
+    );
+  }
 }
 export default User;
