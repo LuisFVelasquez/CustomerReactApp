@@ -8,8 +8,10 @@
     "@testing-library/user-event": "^12.8.3",
     "bootstrap": "^5.1.1",
     "dotenv": "^10.0.0",
+    "firebase": "^9.1.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-firebase-hooks": "^3.0.4",
     "react-router-dom": "^5.3.0",
     "react-scripts": "4.0.3",
     "reactstrap": "^8.10.0",
@@ -40,6 +42,6 @@
     ]
   },
   "engines": {
-    "node": "14.x"
+    "node": "16.x"
   }
 }

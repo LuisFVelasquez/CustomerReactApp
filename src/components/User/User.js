@@ -11,6 +11,10 @@ import {
   ModalFooter,
   Spinner
 } from "reactstrap";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useHistory } from "react-router";
+import { getAuth  } from "firebase/auth";
+import "./User.css";
 
 const data = [
 ];
@@ -20,12 +24,27 @@ const PATH_CUSTOMERS = process.env.REACT_APP_API_CUSTOMERS_PATH;
 
 const User = () => {
 
-
+  const auth = getAuth();
   const [modalActualizar, setModalActualizar] = React.useState(false);
   const [modalInsertar, setModalInsertar] = React.useState(false);
   const [isLoaded, setIsLoaded] = React.useState(false);
-  const [error, setError] = React.useState(null);
+  const [errors, setErrors] = React.useState(null);
   const [newVal, setNewVal] = React.useState(0);
+  const [user, loading, error] = useAuthState(auth);
+  const [name, setName] = React.useState("");
+  const history = useHistory();
+
+
+  const logout = () => {
+    auth.signOut().then(function() {
+      // Sign-out successful.
+      console.log("loggedout");
+    }).catch((error) =>  {
+      // An error happened.
+      const errorCode = error.code;
+        const errorMessage = error.message;
+    });
+  };
 
   const [usuario, setUsuario] = React.useState({
     data: data,
@@ -51,10 +70,15 @@ const User = () => {
         },
         (error) => {
           setIsLoaded(true);
-          setError(error);
+          setErrors(error);
         }
       )
-  }, [newVal])
+  }, [newVal]);
+
+  React.useEffect(() => {
+    if (loading) return;
+    if (!user) return history.replace("/");
+  }, [user, loading]);
 
   const handleChange = (e) => {
     setUsuario((prevState) => ({
@@ -128,7 +152,7 @@ const User = () => {
         },
         (error) => {
           setIsLoaded(true);
-          setError(error);
+          setErrors(error);
         })
     setModalInsertar(false);
   }
@@ -178,10 +202,10 @@ const User = () => {
       <>
         <Container>
           <div>
-
-          </div>
-          <div>
-            <b>{isLoaded ? '' : <Spinner animation="border" role="status"><span className="visually-hidden">Loading...</span></Spinner>}</b>
+            <div>
+              {/* <div>Current User: {user.email}</div> */}
+              <Button color="danger" onClick={logout}>Logout</Button>
+            </div>
           </div>
           <br />
           <Button color="success" onClick={mostrarModalInsertar}>Crear</Button>
