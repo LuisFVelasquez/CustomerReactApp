@@ -68,7 +68,7 @@ const User = () => {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'AuthToken': `${token}`
+          Authorization: `Bearer ${token}`,
         },
       };
       fetch(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions)
@@ -151,8 +151,9 @@ const User = () => {
     user.getIdToken(true).then(token => {
     const requestOptions = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json',
-        'AuthToken': `${token}`  
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(usuarioACrear)
     };
@@ -174,9 +175,10 @@ const User = () => {
     user.getIdToken(true).then(token => {
       const requestOptions = {
         method: 'DELETE',
-        headers: { 'Content-Type': 'application/json',
-          'AuthToken': `${token}` 
-        }
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
       };
       fetch(`${BASE_URL}${PATH_CUSTOMERS}/${id}`, requestOptions)
         .then(result => result.json())
@@ -195,8 +197,9 @@ const User = () => {
     user.getIdToken(true).then(token => {
       const requestOptions = {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json',
-          'AuthToken': `${token}` 
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(customer)
       };
