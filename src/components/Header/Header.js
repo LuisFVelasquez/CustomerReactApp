@@ -55,6 +55,7 @@ const Header = () => {
       </div>
     );
   } else {
+    console.log(user);
     return (
       <div>
         <Navbar color="light" light expand="md">
