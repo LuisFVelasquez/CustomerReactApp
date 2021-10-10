@@ -16,25 +16,10 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 
-const provider = new GoogleAuthProvider();
-
 const signInWithGoogle = () => {
   
 };
-const signInWithEmailAndPassword = (email, password) => {
-  signInWithEmailAndPassword(auth, "cmduquer@gmail.com", "123456789")
-  .then((userCredential) => {
-    // Signed in 
-    //const user = userCredential.user;
-    console.log("logged in");
-    //console.log(user);
-    // ...
-  })
-  .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-  });
-};
+
 const registerWithEmailAndPassword =  ( email, password) => {
   createUserWithEmailAndPassword(auth, email, password)
   .then((userCredential) => {
@@ -63,7 +48,6 @@ const logout = () => {
 };
 export {
   auth,
-  signInWithEmailAndPassword,
   registerWithEmailAndPassword,
   sendPasswordResetEmail,
   signInWithGoogle,
