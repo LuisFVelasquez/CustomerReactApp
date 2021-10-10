@@ -9,12 +9,7 @@ import {
   NavbarBrand,
   Nav,
   NavItem,
-  NavLink,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  NavbarText
+  NavLink
 } from 'reactstrap';
 import './Header.css';
 
@@ -23,7 +18,7 @@ const Header = () => {
   const [user] = useAuthState(auth);
   const [isOpen, setIsOpen] = useState(false);
 
-  const toggle = () => setIsOpen(!isOpen);
+  //const toggle = () => setIsOpen(!isOpen);
 
   if (!user) {
     return (

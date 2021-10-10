@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword,GoogleAuthProvider  } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword  } from "firebase/auth";
 import './Firebase.css';
 
 const firebaseConfig = {
@@ -13,7 +13,7 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+initializeApp(firebaseConfig);
 const auth = getAuth();
 
 const signInWithGoogle = () => {
@@ -24,12 +24,12 @@ const registerWithEmailAndPassword =  ( email, password) => {
   createUserWithEmailAndPassword(auth, email, password)
   .then((userCredential) => {
     // Signed in 
-    const user = userCredential.user;
+    //const user = userCredential.user;
     // ...
   })
   .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
+    //const errorCode = error.code;
+    //const errorMessage = error.message;
     alert(error.message);
     
     // ..
