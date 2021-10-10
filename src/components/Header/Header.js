@@ -9,7 +9,8 @@ import {
   NavbarBrand,
   Nav,
   NavItem,
-  NavLink
+  NavLink,
+  NavbarText
 } from 'reactstrap';
 import './Header.css';
 
@@ -55,7 +56,6 @@ const Header = () => {
       </div>
     );
   } else {
-    console.log(user);
     return (
       <div>
         <Navbar color="light" light expand="md">
@@ -74,6 +74,9 @@ const Header = () => {
               </NavItem>
             </Nav>
             <Nav className="ms-auto" navbar>
+              <NavItem>
+                <NavbarText>{user.email} - {user.displayName}</NavbarText>
+              </NavItem>
               <NavItem>
               <Button color="danger" onClick={logout}>Logout</Button>
               </NavItem>
