@@ -31,16 +31,7 @@ const User = () => {
   const [newVal, setNewVal] = React.useState(0);
   const [user, loading, error] = useAuthState(auth);
   const history = useHistory();
-  const logout = () => {
-    auth.signOut().then(function () {
-      // Sign-out successful.
-      console.log("loggedout");
-    }).catch((error) => {
-      // An error happened.
-      //const errorCode = error.code;
-      //const errorMessage = error.message;
-    });
-  };
+  
 
   const [usuario, setUsuario] = React.useState({
     data: data,
@@ -222,12 +213,6 @@ const User = () => {
 
       <>
         <Container>
-          <div>
-            <div>
-              {/* <div>Current User: {user.email}</div> */}
-              <Button color="danger" onClick={logout}>Logout</Button>
-            </div>
-          </div>
           <br />
           <Button color="success" onClick={mostrarModalInsertar}>Crear</Button>
           <br />

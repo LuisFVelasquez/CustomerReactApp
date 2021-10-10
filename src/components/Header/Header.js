@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useAuthState } from "react-firebase-hooks/auth";
 import { getAuth } from "firebase/auth";
-import PropTypes from 'prop-types';
 import {
   Collapse,
+  Button,
   Navbar,
   NavbarToggler,
   NavbarBrand,
@@ -20,12 +20,22 @@ const Header = () => {
 
   //const toggle = () => setIsOpen(!isOpen);
 
+  const logout = () => {
+    auth.signOut().then(function () {
+      // Sign-out successful.
+      console.log("loggedout");
+    }).catch((error) => {
+      // An error happened.
+      //const errorCode = error.code;
+      //const errorMessage = error.message;
+    });
+  };
+
   if (!user) {
     return (
       <div>
-        <h5>Crud API</h5>
         {!loading && <Navbar color="light" light expand="md">
-          <NavbarBrand href="/">Brand</NavbarBrand>
+          <NavbarBrand href="/">Crud Api</NavbarBrand>
           <NavbarToggler onClick={() => { setIsOpen(!isOpen) }} />
           <Collapse isOpen={isOpen} navbar>
             <Nav className="mr-auto" navbar>
@@ -43,9 +53,8 @@ const Header = () => {
   } else {
     return (
       <div>
-        <h5>Crud API</h5>
         {!loading && <Navbar color="light" light expand="md">
-          <NavbarBrand href="/">Brand</NavbarBrand>
+          <NavbarBrand href="/">Crud Api</NavbarBrand>
           <NavbarToggler onClick={() => { setIsOpen(!isOpen) }} />
           <Collapse isOpen={isOpen} navbar>
             <Nav className="mr-auto" navbar>
@@ -56,21 +65,16 @@ const Header = () => {
                 <NavLink href="/users">Usuarios</NavLink>
               </NavItem>
             </Nav>
+            <Nav className="ms-auto" navbar>
+              <NavItem>
+              <Button color="danger" onClick={logout}>Logout</Button>
+              </NavItem>
+            </Nav>
           </Collapse>
         </Navbar>}
       </div>
     );
   }
-};
-
-Header.propTypes = {
-  light: PropTypes.bool,
-  dark: PropTypes.bool,
-  fixed: PropTypes.string,
-  color: PropTypes.string,
-  role: PropTypes.string,
-  expand: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
-  tag: PropTypes.oneOfType([PropTypes.func, PropTypes.string])
 };
 
 export default Header;
