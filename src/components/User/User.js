@@ -10,7 +10,6 @@ import {
   FormGroup,
   ModalFooter,
   Spinner,
-  InputGroup
 } from "reactstrap";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useHistory } from "react-router";
@@ -28,11 +27,9 @@ const User = () => {
   const auth = getAuth();
   const [modalActualizar, setModalActualizar] = React.useState(false);
   const [modalInsertar, setModalInsertar] = React.useState(false);
-  const [isLoaded, setIsLoaded] = React.useState(false);
   const [errors, setErrors] = React.useState(null);
   const [newVal, setNewVal] = React.useState(0);
   const [user, loading, error] = useAuthState(auth);
-  const [name, setName] = React.useState("");
   const history = useHistory();
   const logout = () => {
     auth.signOut().then(function () {
@@ -40,8 +37,8 @@ const User = () => {
       console.log("loggedout");
     }).catch((error) => {
       // An error happened.
-      const errorCode = error.code;
-      const errorMessage = error.message;
+      //const errorCode = error.code;
+      //const errorMessage = error.message;
     });
   };
 
@@ -75,14 +72,14 @@ const User = () => {
         .then(res => res.json())
         .then(
           (result) => {
-            setIsLoaded(true);
+            //setIsLoaded(true);
             setUsuario({
               ...usuario,
               data: result
             });
           },
           (error) => {
-            setIsLoaded(true);
+            //setIsLoaded(true);
             setErrors(error);
           }
         )
@@ -164,7 +161,7 @@ const User = () => {
           setNewVal(newVal + 1);
         },
         (error) => {
-          setIsLoaded(true);
+          //setIsLoaded(true);
           setErrors(error);
         })
       });
