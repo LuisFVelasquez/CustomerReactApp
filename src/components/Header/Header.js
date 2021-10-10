@@ -34,6 +34,10 @@ const Header = () => {
   if (!user) {
     return (
       <div>
+        <Navbar color="light" light expand="md">
+        <NavbarBrand href="/">Crud Api</NavbarBrand>  
+        </Navbar>
+
         {!loading && <Navbar color="light" light expand="md">
           <NavbarBrand href="/">Crud Api</NavbarBrand>
           <NavbarToggler onClick={() => { setIsOpen(!isOpen) }} />
@@ -53,7 +57,10 @@ const Header = () => {
   } else {
     return (
       <div>
-        {!loading && <Navbar color="light" light expand="md">
+        <Navbar color="light" light expand="md">
+        <NavbarBrand href="/">Crud Api</NavbarBrand>  
+        </Navbar>
+        <Navbar color="light" light expand="md">
           <NavbarBrand href="/">Crud Api</NavbarBrand>
           <NavbarToggler onClick={() => { setIsOpen(!isOpen) }} />
           <Collapse isOpen={isOpen} navbar>
@@ -71,7 +78,7 @@ const Header = () => {
               </NavItem>
             </Nav>
           </Collapse>
-        </Navbar>}
+        </Navbar>
       </div>
     );
   }
