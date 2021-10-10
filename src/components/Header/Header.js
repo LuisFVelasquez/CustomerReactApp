@@ -75,7 +75,7 @@ const Header = () => {
             </Nav>
             <Nav className="ms-auto" navbar>
               <NavItem>
-                <NavbarText>{user.email} - {user.displayName}</NavbarText>
+                <NavbarText>{user.email} {user.displayName? user.displayName:''} </NavbarText>
               </NavItem>
               <NavItem>
               <Button color="danger" onClick={logout}>Logout</Button>
