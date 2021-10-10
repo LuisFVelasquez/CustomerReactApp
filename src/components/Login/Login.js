@@ -3,6 +3,7 @@ import { Link, useHistory } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { Alert } from 'reactstrap';
 import "./Login.css";
 
 const Login = () => {
@@ -31,8 +32,10 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [user, loading, error] = useAuthState(auth);
-  const [errors, seterrors] = useState('');
+  const [hasError, setHasError] = useState(false);
+  const [errors, setErrors] = useState("");
   const history = useHistory();
+  const usernameRef = React.useRef(null)
 
   const signInWithGoogle = () => {
     signInWithPopup(auth, provider)
@@ -52,6 +55,8 @@ const Login = () => {
         // The AuthCredential type that was used.
         const credential = GoogleAuthProvider.credentialFromError(error);
         // ...
+        setHasError(true);
+        setErrors(error.message);
       });
   }
 
@@ -70,6 +75,8 @@ const Login = () => {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
+        setHasError(true);
+        setErrors(error.message);
       });
 
 
@@ -78,9 +85,6 @@ const Login = () => {
   useEffect(() => {
     if (loading) {
       // maybe trigger a loading screen
-      return (
-        <div></div>
-      );
     }
     if (user) history.replace("/users");
   }, [user, loading]);
@@ -91,12 +95,19 @@ const Login = () => {
     return (
       <div className="login">
         <div className="login__container">
+          {hasError &&
+            <Alert color="warning">
+              {errors}
+            </Alert>
+          }
+
           <input
             type="text"
             className="login__textBox"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="E-mail Address"
+            ref={usernameRef}
           />
           <input
             type="password"
