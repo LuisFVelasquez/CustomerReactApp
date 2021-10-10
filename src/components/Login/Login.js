@@ -63,8 +63,8 @@ const Login = () => {
         //const token = userCredential.accessToken;
         // The signed-in user info.
         //localStorage.setItem('user', JSON.stringify(user));
-        
-        
+
+
         // ...
       })
       .catch((error) => {
@@ -78,45 +78,52 @@ const Login = () => {
   useEffect(() => {
     if (loading) {
       // maybe trigger a loading screen
-      return;
+      return (
+        <div></div>
+      );
     }
     if (user) history.replace("/users");
   }, [user, loading]);
-  return (
-    <div className="login">
-      <div className="login__container">
-        <input
-          type="text"
-          className="login__textBox"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="E-mail Address"
-        />
-        <input
-          type="password"
-          className="login__textBox"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
-        />
-        <button
-          className="login__btn"
-          onClick={() => signInEmailAndPassword(email, password)}
-        >
-          Login
-        </button>
-        <button className="login__btn login__google" onClick={signInWithGoogle}>
-          Login with Google
-        </button>
-        <div>
-          <Link to="/reset">Forgot Password</Link>
+
+  if (loading) {
+    return '';
+  } else {
+    return (
+      <div className="login">
+        <div className="login__container">
+          <input
+            type="text"
+            className="login__textBox"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="E-mail Address"
+          />
+          <input
+            type="password"
+            className="login__textBox"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Password"
+          />
+          <button
+            className="login__btn"
+            onClick={() => signInEmailAndPassword(email, password)}
+          >
+            Login
+          </button>
+          <button className="login__btn login__google" onClick={signInWithGoogle}>
+            Login with Google
+          </button>
+          <div>
+            <Link to="/reset">Forgot Password</Link>
+          </div>
+          <div>
+            Don't have an account? <Link to="/register">Register</Link> now.
+          </div>
         </div>
-        <div>
-          Don't have an account? <Link to="/register">Register</Link> now.
-        </div>
-      </div>
-    </div>);
-};
+      </div>);
+  };
+}
 
 Login.propTypes = {};
 
