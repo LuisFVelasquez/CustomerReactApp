@@ -10,12 +10,14 @@ import "./Register.css";
 function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
   const [user, loading] = useAuthState(auth);
   const history = useHistory();
   const register = () => {
-    if (!name) alert("Please enter name");
-    registerWithEmailAndPassword(name, email, password);
+    if (!email) {
+      alert("Please enter name");
+    } else {
+      registerWithEmailAndPassword(email, password);
+    }
   };
   useEffect(() => {
     if (loading) return;
@@ -24,13 +26,6 @@ function Register() {
   return (
     <div className="register">
       <div className="register__container">
-        <input
-          type="text"
-          className="register__textBox"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="Full Name"
-        />
         <input
           type="text"
           className="register__textBox"
