@@ -15,7 +15,7 @@ import './Header.css';
 
 const Header = () => {
   const auth = getAuth();
-  const [user] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
   const [isOpen, setIsOpen] = useState(false);
 
   //const toggle = () => setIsOpen(!isOpen);
@@ -24,41 +24,41 @@ const Header = () => {
     return (
       <div>
         <h5>Crud API</h5>
-        <Navbar color="light" light expand="md">
-            <NavbarBrand href="/">Brand</NavbarBrand>
-            <NavbarToggler onClick={() => { setIsOpen(!isOpen) }} />
-            <Collapse isOpen={isOpen} navbar>
-                <Nav className="mr-auto" navbar>
-                    <NavItem>
-                        <NavLink href="/Login">Login</NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink href="/register">Signup</NavLink>
-                    </NavItem>
-                </Nav>
-            </Collapse>
-        </Navbar>
-    </div>
+        {!loading && <Navbar color="light" light expand="md">
+          <NavbarBrand href="/">Brand</NavbarBrand>
+          <NavbarToggler onClick={() => { setIsOpen(!isOpen) }} />
+          <Collapse isOpen={isOpen} navbar>
+            <Nav className="mr-auto" navbar>
+              <NavItem>
+                <NavLink href="/Login">Login</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink href="/register">Signup</NavLink>
+              </NavItem>
+            </Nav>
+          </Collapse>
+        </Navbar>}
+      </div>
     );
   } else {
     return (
       <div>
         <h5>Crud API</h5>
-        <Navbar color="light" light expand="md">
-            <NavbarBrand href="/">Brand</NavbarBrand>
-            <NavbarToggler onClick={() => { setIsOpen(!isOpen) }} />
-            <Collapse isOpen={isOpen} navbar>
-                <Nav className="mr-auto" navbar>
-                    <NavItem>
-                        <NavLink href="/">Home</NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink href="/users">Usuarios</NavLink>
-                    </NavItem>
-                </Nav>
-            </Collapse>
-        </Navbar>
-    </div>
+        {!loading && <Navbar color="light" light expand="md">
+          <NavbarBrand href="/">Brand</NavbarBrand>
+          <NavbarToggler onClick={() => { setIsOpen(!isOpen) }} />
+          <Collapse isOpen={isOpen} navbar>
+            <Nav className="mr-auto" navbar>
+              <NavItem>
+                <NavLink href="/">Home</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink href="/users">Usuarios</NavLink>
+              </NavItem>
+            </Nav>
+          </Collapse>
+        </Navbar>}
+      </div>
     );
   }
 };

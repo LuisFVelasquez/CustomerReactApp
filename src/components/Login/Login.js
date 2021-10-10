@@ -5,6 +5,8 @@ import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { Alert } from 'reactstrap';
 import "./Login.css";
+import PropTypes from 'prop-types';
+import { Spinner } from 'reactstrap';
 
 const Login = () => {
 
@@ -33,11 +35,13 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [user, loading] = useAuthState(auth);
   const [hasError, setHasError] = useState(false);
+  const [login, setLogin] = useState(false);
   const [errors, setErrors] = useState("");
   const history = useHistory();
   const usernameRef = React.useRef(null)
 
   const signInWithGoogle = () => {
+    setLogin(true);
     signInWithPopup(auth, provider)
       .then((result) => {
         // This gives you a Google Access Token. You can use it to access the Google API.
@@ -46,6 +50,7 @@ const Login = () => {
         // The signed-in user info.
         //const user = result.user;
         // ...
+        setLogin(false);
       }).catch((error) => {
         // Handle Errors here.
         //const errorCode = error.code;
@@ -57,10 +62,12 @@ const Login = () => {
         // ...
         setHasError(true);
         setErrors(error.message);
+        setLogin(false);
       });
   }
 
   const signInEmailAndPassword = e => {
+    setLogin(true);
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed in 
@@ -71,12 +78,14 @@ const Login = () => {
 
 
         // ...
+        setLogin(false);
       })
       .catch((error) => {
         //const errorCode = error.code;
         //const errorMessage = error.message;
         setHasError(true);
         setErrors(error.message);
+        setLogin(false);
       });
 
 
@@ -90,10 +99,13 @@ const Login = () => {
   }, [user, loading]);
 
   if (loading) {
-    return '';
+    return <Spinner children="" style={{ width: '8rem', height: '8rem', position: 'fixed', top: '30%', left: '50%' } } />;
   } else {
     return (
       <div className="login">
+        {login &&
+            <Spinner children="" style={{ width: '8rem', height: '8rem', position: 'fixed', top: '20%', left: '50%' } } />
+        }
         <div className="login__container">
           {hasError &&
             <Alert color="warning">
@@ -136,7 +148,14 @@ const Login = () => {
   };
 }
 
-Login.propTypes = {};
+Login.propTypes = {
+  type: PropTypes.string, // default: 'border'
+  size: PropTypes.string,
+  color: PropTypes.string,
+  className: PropTypes.string,
+  cssModule: PropTypes.object,
+  children: PropTypes.string, // default: 'Loading...'
+};
 
 Login.defaultProps = {};
 
