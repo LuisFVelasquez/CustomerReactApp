@@ -9,8 +9,6 @@ import { auth, signInEmailAndPassword, signInWithGoogle  } from "../Firebase/Fir
 
 const Login = () => {
 
-
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [user, loading] = useAuthState(auth);
@@ -20,9 +18,6 @@ const Login = () => {
   const history = useHistory();
   const usernameRef = React.useRef(null)
 
-  const handleErrors = (error) => {
-    setErrors(error);
-  };
 
   useEffect(() => {
     if (loading) {
