@@ -38,7 +38,7 @@ const registerWithEmailAndPassword = (email, password) => {
     });
 
 };
-const resetPassword = async (email, handleError,handleSuccess) => {
+const resetPassword = (email, handleError,handleSuccess) => {
   try {
     sendPasswordResetEmail(auth, email)
       .then(() => {
